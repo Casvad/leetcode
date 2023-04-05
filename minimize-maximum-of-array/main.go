@@ -73,24 +73,6 @@ func findMinimumIndexBefore(nums []int, limit int) int {
 	return minElementIndex
 }
 
-func minimizeArrayValueASC(nums []int) {
-	for i := 1; i < len(nums); i++ {
-		//fmt.Printf("%d %v \n", i, nums)
-		if nums[i-1] < nums[i]-1 {
-			cof := (nums[i] - nums[i-1]) / 2
-			calculation := nums[i] - cof
-			nums[i] = calculation
-			nums[i-1] = nums[i-1] + cof
-			if i > 1 && nums[i-2] < nums[i-1]-1 {
-				i = i - 2
-				if i == -1 {
-					i = 0
-				}
-			}
-		}
-	}
-}
-
 ///This solution has speed problems because of the massive iterations to reach for the solution
 func minimizeArrayValueV1(nums []int) int {
 
