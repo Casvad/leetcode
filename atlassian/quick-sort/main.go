@@ -13,12 +13,12 @@ func main() {
 
 func QuickSort(arr []int) []int {
 
-	quickSort(&arr, 0, len(arr)-1)
+	quickSort(arr, 0, len(arr)-1)
 
 	return arr
 }
 
-func quickSort(arr *[]int, start, end int) {
+func quickSort(arr []int, start, end int) {
 
 	if start < end {
 		piv := pivot(arr, start, end)
@@ -28,21 +28,21 @@ func quickSort(arr *[]int, start, end int) {
 	}
 }
 
-func pivot(arr *[]int, start, end int) int {
+func pivot(arr []int, start, end int) int {
 
-	piv := (*arr)[end]
+	piv := arr[end]
 	i := start - 1
 	for j := start; j < end; j++ {
-		if (*arr)[j] < piv {
+		if arr[j] < piv {
 			i++
-			tmp := (*arr)[j]
-			(*arr)[j] = (*arr)[i]
-			(*arr)[i] = tmp
+			tmp := arr[j]
+			arr[j] = arr[i]
+			arr[i] = tmp
 		}
 	}
 	i++
-	(*arr)[end] = (*arr)[i]
-	(*arr)[i] = piv
+	arr[end] = arr[i]
+	arr[i] = piv
 
 	return i
 }
