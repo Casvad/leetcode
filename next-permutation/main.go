@@ -96,8 +96,7 @@ func nextPermutation(nums []int) {
 }
 
 func main() {
-	//[5,5,2,3,4,7]
-	ans := []int{5, 4, 7, 5, 3, 2}
+	ans := []int{1, 2, 3, 4, 5}
 	fmt.Printf("%v\n", ans)
 	for i := 1; i < 10; i++ {
 		nextPermutation(ans)

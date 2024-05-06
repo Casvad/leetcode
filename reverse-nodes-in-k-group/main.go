@@ -1,27 +1,14 @@
 package main
 
+import "fmt"
+
 func main() {
 
-	node := &ListNode{
-		Val: 1,
-		Next: &ListNode{
-			Val: 2,
-			Next: &ListNode{
-				Val: 3,
-				Next: &ListNode{
-					Val: 4,
-					Next: &ListNode{
-						Val:  5,
-						Next: nil,
-					},
-				},
-			},
-		},
-	}
+	node := []int{1, 2, 3, 4, 5}
 
-	x := reverseKGroup(node, 2)
+	x := reverseKGroup(intArray(node).toNode(), 2)
 
-	print(x)
+	print(x.ToString())
 }
 
 type ListNode struct {
@@ -29,37 +16,52 @@ type ListNode struct {
 	Next *ListNode
 }
 
-func reverseKGroup(head *ListNode, k int) *ListNode {
+type intArray []int
 
-	return reverseKGroupFromNode(head, k, true)
-}
-
-func reverseKGroupFromNode(head *ListNode, k int, loop bool) *ListNode {
-	subK := k
-	for k >= 0 {
-		tmp := head
-		prev := head
-		for i := 0; i < k; i++ {
-			toSwap := tmp.Next
-			if toSwap == nil {
-				break
-			}
-			tmp.Next = toSwap.Next
-			toSwap.Next = tmp
-
-			if i == 0 {
-				head = toSwap
-			} else {
-				prev.Next = toSwap
-			}
-			prev = toSwap
-		}
-		k--
-		if k < 0 && loop {
-			reverseKGroupFromNode(tmp, subK, false)
-			return head
-		}
+func (t intArray) toNode() *ListNode {
+	head := &ListNode{Val: t[0], Next: nil}
+	currentNode := head
+	for i := 1; i < len(t); i++ {
+		newNode := &ListNode{Val: t[i], Next: nil}
+		currentNode.Next = newNode
+		currentNode = newNode
 	}
 
 	return head
+}
+func (t *ListNode) ToString() string {
+	if t == nil {
+		return "\n"
+	} else {
+		return fmt.Sprintf("%v -> %v", t.Val, t.Next.ToString())
+	}
+}
+
+func reverseKGroup(head *ListNode, k int) *ListNode {
+
+	var newHead *ListNode
+	stack := make([]*ListNode, 0)
+	iteratorNode := head
+	var previousBatchLastNode *ListNode
+	for iteratorNode != nil {
+		nextNode := iteratorNode.Next
+		stack = append(stack, iteratorNode)
+		if len(stack) == k {
+			stack[0].Next = iteratorNode.Next
+			for i := len(stack) - 1; i > 0; i-- {
+				stack[i].Next = stack[i-1]
+			}
+			if newHead == nil {
+				newHead = iteratorNode
+			}
+			if previousBatchLastNode != nil {
+				previousBatchLastNode.Next = iteratorNode
+			}
+			previousBatchLastNode = stack[0]
+			stack = make([]*ListNode, 0)
+		}
+		iteratorNode = nextNode
+	}
+
+	return newHead
 }
